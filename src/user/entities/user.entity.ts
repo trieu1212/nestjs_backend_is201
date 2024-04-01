@@ -28,6 +28,9 @@ export class User {
   @Column({ default: 1 })
   status: number;
 
+  @Column({ default: 0 })
+  isAdmin: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
