@@ -31,6 +31,9 @@ export class User {
   @Column({ default: 0 })
   isAdmin: number;
 
+  @Column({ default: 0})
+  serviceId: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
