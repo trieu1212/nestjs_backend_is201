@@ -1,17 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Like, Repository, UpdateResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as  bcrypt  from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { FilterUserDto } from './dto/filter-user.dto';
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
-  async findAll(): Promise<User[]> {
-    const users = await this.userRepository.find({
+  async findAll(query:FilterUserDto): Promise<any> {
+    const itemPerPage = Number(query.itemPerPage) || 10
+    const page = Number(query.page) || 1
+    const skip = (page-1)*itemPerPage;
+    const search = query.search || ''
+    const [result,total] = await this.userRepository.findAndCount({
+      where:[
+        {username:Like('%'+search+'%')},
+        {email:Like('%'+search+'%')},
+      ],
+      order: { createdAt: 'DESC' },
+      take: itemPerPage,
+      skip: skip,
       select: [
         'id',
         'username',
@@ -24,7 +36,17 @@ export class UserService {
         'updatedAt',
       ],
     });
-    return users;
+    const lastPage = Math.ceil(total/itemPerPage)
+    const nextPage = page+1>lastPage?null:page+1
+    const prevPage = page-1<1?null:page-1
+    return {
+      data:result,
+      total,
+      currentPage:page,
+      nextPage,
+      prevPage,
+      lastPage
+    }
   }
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOneBy({ id: id });
