@@ -1,7 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
-import { Service } from 'src/service/entities/service.entity';
-import { User } from 'src/user/entities/user.entity';
 
 export class CreateOrderDto {
   @IsNotEmpty()
@@ -18,9 +16,9 @@ export class CreateOrderDto {
 
   @IsNotEmpty()
   @ApiProperty()
-  user: User;
+  userId: number;
 
   @IsNotEmpty()
   @ApiProperty()
-  service: Service;
+  serviceId: number;
 }
