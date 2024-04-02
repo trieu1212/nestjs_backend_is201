@@ -5,9 +5,11 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FilterUserDto } from './dto/filter-user.dto';
+import { AdminGuard } from 'src/auth/admin.guard';
 
 @Controller('user')
 export class UserController {
+  // eslint-disable-next-line prettier/prettier
   constructor(private userService: UserService) {}
 
   @UseGuards(AuthGuard)
@@ -22,7 +24,7 @@ export class UserController {
     return this.userService.findOne(Number(id))
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AdminGuard)
   @Post('/create')
   create(@Body() createUserDto:CreateUserDto):Promise<User>{
     return this.userService.create(createUserDto)

@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { Request } from "express";
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
     // eslint-disable-next-line prettier/prettier
     constructor(private jwtService:JwtService, private configService:ConfigService){}
     async canActivate(context:ExecutionContext):Promise<boolean>{
@@ -16,6 +16,9 @@ export class AuthGuard implements CanActivate {
             const payload = await this.jwtService.verifyAsync(accessToken,{
                 secret : this.configService.get<string>('SECRET_ACCESS')
             })
+            if(payload.isAdmin!==1){
+                throw new UnauthorizedException();
+            }
             request['user'] = payload;
         } catch (error) {
             throw new UnauthorizedException()
