@@ -1,4 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Image } from 'src/image/entities/image.entity';
+import { Service } from 'src/service/entities/service.entity';
+import { User } from 'src/user/entities/user.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
 export class Post {
@@ -26,8 +36,14 @@ export class Post {
   @Column()
   arcreage: number;
 
-  @Column()
-  userId: number;
+  @ManyToOne(() => User, (user) => user.posts)
+  user: User;
+
+  @ManyToOne(() => Service, (service) => service.posts)
+  service: Service;
+
+  @OneToMany(() => Image, (image) => image.post)
+  images: Image[];
 
   @CreateDateColumn()
   createdAt: Date;

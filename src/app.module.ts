@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './post/post.module';
 import { ServiceModule } from './service/service.module';
 import { OrderModule } from './order/order.module';
+import { ImageModule } from './image/image.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(dataSourceOptions),
@@ -18,6 +19,7 @@ import { OrderModule } from './order/order.module';
     PostModule,
     ServiceModule,
     OrderModule,
+    ImageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

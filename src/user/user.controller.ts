@@ -6,7 +6,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FilterUserDto } from './dto/filter-user.dto';
 import { AdminGuard } from 'src/auth/admin.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('User')
 @Controller('user')
 export class UserController {
   // eslint-disable-next-line prettier/prettier

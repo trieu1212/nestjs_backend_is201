@@ -3,7 +3,9 @@ import { Headers ,Body, Controller,Post, UsePipes, ValidationPipe } from '@nestj
 import { RegisterUserDto } from './dto/register-user.dto';
 import { User } from 'src/user/entities/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController { 
 

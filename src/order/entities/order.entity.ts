@@ -1,7 +1,11 @@
+import { Service } from 'src/service/entities/service.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -22,11 +26,13 @@ export class Order {
   @Column()
   totalPrice: number;
 
-  @Column()
-  userId: number;
+  @OneToOne(() => User)
+  @JoinColumn()
+  user: User;
 
-  @Column()
-  serviceId: number;
+  @OneToOne(() => Service)
+  @JoinColumn()
+  service: Service;
 
   @CreateDateColumn()
   createdAt: Date;

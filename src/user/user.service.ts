@@ -31,7 +31,6 @@ export class UserService {
         'email',
         'avatar',
         'isAdmin',
-        'serviceId',
         'status',
         'createdAt',
         'updatedAt',

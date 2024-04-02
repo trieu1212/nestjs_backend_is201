@@ -5,7 +5,9 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { FilterServiceDto } from './dto/filter-service.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Service')
 @Controller('service')
 export class ServiceController {
     // eslint-disable-next-line prettier/prettier

@@ -1,5 +1,12 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export class FilterUserDto {
+  @ApiProperty()
   page: string;
+
+  @ApiProperty()
   itemPerPage: string;
-  search:string;
+
+  @ApiProperty()
+  search: string;
 }

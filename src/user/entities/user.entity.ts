@@ -1,8 +1,12 @@
+import { Post } from 'src/post/entities/post.entity';
+import { Service } from 'src/service/entities/service.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  OneToMany,
+  ManyToOne,
 } from 'typeorm';
 
 @Entity()
@@ -31,8 +35,11 @@ export class User {
   @Column({ default: 0 })
   isAdmin: number;
 
-  @Column({ default: 0})
-  serviceId: number;
+  @ManyToOne(() => Service, (service) => service.users)
+  service: Service;
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
 
   @CreateDateColumn()
   createdAt: Date;
