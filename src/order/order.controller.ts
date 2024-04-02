@@ -8,8 +8,8 @@ export class OrderController {
     // eslint-disable-next-line prettier/prettier
     constructor( private orderService:OrderService) {}
     
-    @Post('/create')
-    create(@Req() req:any, @Body() createOrderDto:CreateOrderDto):Promise<Order>{
-        return this.orderService.create(req.user.id, createOrderDto)
-    }
+    // @Post('/create')
+    // create(@Req() req:any, @Body() createOrderDto:CreateOrderDto):Promise<Order>{
+    //     return this.orderService.create(req.user.id, createOrderDto)
+    // }
 }

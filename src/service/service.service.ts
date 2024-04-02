@@ -27,6 +27,7 @@ export class ServiceService {
       skip: skip,
       select: [
         'id',
+        'name',
         'description',
         'dateTime',
         'price',
