@@ -46,19 +46,19 @@ export class OrderService {
     const page = Number(query.page) || 1;
     const skip = (page - 1) * itemPerPage;
     const [result, total] = await this.orderRepository.findAndCount({
-      where: { user: user },
+      where: { user: { id: user.id}},
       order: { createdAt: 'DESC' },
-      select: [
-        'id',
-        'dateStart',
-        'dateEnd',
-        'status',
-        'totalPrice',
-        'user',
-        'service',
-        'createdAt',
-        'updatedAt',
-      ],
+      select: {
+        user:{
+          id:true,
+          username:true,
+          email:true,
+          avatar:true
+        },
+      },
+      relations:{
+        user:true
+      },
       take: itemPerPage,
       skip: skip,
     });
