@@ -5,11 +5,13 @@ import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { User } from 'src/user/entities/user.entity';
 import { Service } from 'src/service/entities/service.entity';
+import { FilterOrderDto } from './dto/filter-order.dto';
 
 @Injectable()
 export class OrderService {
   // eslint-disable-next-line prettier/prettier
   constructor(
+    // eslint-disable-next-line prettier/prettier
     @InjectRepository(Order) private orderRepository: Repository<Order>,
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(Service) private serviceRepository: Repository<Service>,
@@ -37,5 +39,39 @@ export class OrderService {
     } catch (error) {
       throw new HttpException('Không thể tạo đơn hàng', HttpStatus.BAD_REQUEST);
     }
+  }
+  async findAll(id: number, query: FilterOrderDto): Promise<any> {
+    const user = await this.userRepository.findOneBy({ id: id });
+    const itemPerPage = Number(query.itemPerPage) || 10;
+    const page = Number(query.page) || 1;
+    const skip = (page - 1) * itemPerPage;
+    const [result, total] = await this.orderRepository.findAndCount({
+      where: { user: user },
+      order: { createdAt: 'DESC' },
+      select: [
+        'id',
+        'dateStart',
+        'dateEnd',
+        'status',
+        'totalPrice',
+        'user',
+        'service',
+        'createdAt',
+        'updatedAt',
+      ],
+      take: itemPerPage,
+      skip: skip,
+    });
+    const lastPage = Math.ceil(total / itemPerPage);
+    const nextPage = page + 1 > lastPage ? null : page + 1;
+    const prevPage = page - 1 < 1 ? null : page - 1;
+    return {
+      data: result,
+      total,
+      currentPage: page,
+      nextPage,
+      prevPage,
+      lastPage,
+    };
   }
 }
