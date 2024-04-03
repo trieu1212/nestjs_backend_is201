@@ -74,4 +74,27 @@ export class OrderService {
       lastPage,
     };
   }
+  async findOne(id: number):Promise<Order>{
+    return await this.orderRepository.findOne(
+      {
+        where:{id:id},
+        relations:{
+          user:true,
+          service:true
+        },
+        select:{
+          user:{
+            id:true,
+            username:true,
+            email:true,
+            avatar:true
+          },
+          service:{
+            id:true,
+            name:true
+          }
+        }
+      }
+    )
+  }
 }

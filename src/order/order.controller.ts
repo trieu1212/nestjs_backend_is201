@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { Order } from './entities/order.entity';
@@ -23,5 +23,11 @@ export class OrderController {
   @Get()
   findAll(@Req() req:any, @Query() query:FilterOrderDto):Promise<Order[]>{
     return this.orderService.findAll(req.user.id,query)
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/detail/:id')
+  findOne(@Param('id') id:string):Promise<Order>{
+    return this.orderService.findOne(Number(id))
   }
 }

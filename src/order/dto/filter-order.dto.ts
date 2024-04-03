@@ -6,7 +6,4 @@ export class FilterOrderDto {
 
   @ApiProperty()
   itemPerPage: string;
-
-  @ApiProperty()
-  search: string;
 }
