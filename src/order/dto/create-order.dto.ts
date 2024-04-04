@@ -12,10 +12,6 @@ export class CreateOrderDto {
 
   @IsNotEmpty()
   @ApiProperty()
-  totalPrice: number;
-
-  @IsNotEmpty()
-  @ApiProperty()
   userId: number;
 
   @IsNotEmpty()

@@ -1,13 +1,19 @@
-import { Controller, Post, Req } from '@nestjs/common';
-// import { Request } from 'express';
-// import { CreatePostDto } from './dto/create-post.dto';
-// import { Post } from './entities/post.entity';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 
-@Controller('post')
+import { CreatePostDto } from './dto/create-post.dto';
+import { Post as PostEntity } from './entities/post.entity';
+import { PostService } from './post.service';
+import { AuthGuard } from 'src/auth/auth.guard';
+
+@Controller('posts')
 export class PostController {
-
-    // @Post()
-    // create(@Req() req:Request, @Body() createPostDto:CreatePostDto):Promise<Post>{
-
-    // }
+    // eslint-disable-next-line prettier/prettier
+    constructor(private postService: PostService){}
+    @UseGuards(AuthGuard)
+    @Post('/create')
+    create(@Req() req:any, @Body() createPostDto:CreatePostDto):Promise<PostEntity>{
+        return this.postService.create(req.user.id,createPostDto);
+        console.log(req.user.id);
+        console.log(createPostDto);
+    }
 }

@@ -20,6 +20,9 @@ export class User {
   @Column()
   email: string;
 
+  @Column({ nullable: true, default: null })
+  phone: string;
+
   @Column()
   password: string;
 
@@ -34,6 +37,9 @@ export class User {
 
   @Column({ default: 0 })
   isAdmin: number;
+
+  @Column({ default: 0 })
+  postAmount: number;
 
   @ManyToOne(() => Service, (service) => service.users)
   service: Service;
