@@ -5,7 +5,9 @@ import { Post as PostEntity } from './entities/post.entity';
 import { PostService } from './post.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { FilterPostDto } from './dto/filter-post.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Posts')
 @Controller('posts')
 export class PostController {
     // eslint-disable-next-line prettier/prettier
