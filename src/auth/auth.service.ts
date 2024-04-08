@@ -17,11 +17,13 @@ export class AuthService {
   ) {}
   async register(registerUserDto: RegisterUserDto): Promise<User> {
     const hashPassword = await this.hashPassword(registerUserDto.password);
-    return await this.userRepository.save({
+    await this.userRepository.save({  
       ...registerUserDto,
+      status:1,
       refreshToken: 'refreshToken_string',
       password: hashPassword,
     });
+    throw new HttpException('Đăng kí thành công',HttpStatus.CREATED)
   }
   private async hashPassword(password: string): Promise<string> {
     const saltRound = 10;
