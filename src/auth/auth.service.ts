@@ -23,14 +23,6 @@ export class AuthService {
   }
   async register(registerUserDto: RegisterUserDto): Promise<User> {
     try {
-      const user = this.userRepository.findOne({
-        where: { username: registerUserDto.username }
-      })
-      console.log(user)
-      if (user) {
-        throw new HttpException("User đã tồn tại", HttpStatus.CONFLICT)
-      }
-      else {
         const hashPassword = await this.hashPassword(registerUserDto.password);
         await this.userRepository.save({
           ...registerUserDto,
@@ -40,7 +32,7 @@ export class AuthService {
         });
         throw new HttpException('Đăng kí thành công', HttpStatus.CREATED)
       }
-    } catch (error) {
+     catch (error) {
       throw error
     }
   }
