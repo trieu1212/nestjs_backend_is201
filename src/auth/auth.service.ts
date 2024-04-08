@@ -22,21 +22,26 @@ export class AuthService {
     return hash;
   }
   async register(registerUserDto: RegisterUserDto): Promise<User> {
-    const user = this.userRepository.findOne({
-      where: { username: registerUserDto.username }
-    })
-    if (user) {
-      throw new HttpException("User đã tồn tại", HttpStatus.CONFLICT)
-    }
-    else {
-      const hashPassword = await this.hashPassword(registerUserDto.password);
-      await this.userRepository.save({
-        ...registerUserDto,
-        status: 1,
-        refreshToken: 'refreshToken_string',
-        password: hashPassword,
-      });
-      throw new HttpException('Đăng kí thành công', HttpStatus.CREATED)
+    try {
+      const user = this.userRepository.findOne({
+        where: { username: registerUserDto.username }
+      })
+      console.log(user)
+      if (user) {
+        throw new HttpException("User đã tồn tại", HttpStatus.CONFLICT)
+      }
+      else {
+        const hashPassword = await this.hashPassword(registerUserDto.password);
+        await this.userRepository.save({
+          ...registerUserDto,
+          status: 1,
+          refreshToken: 'refreshToken_string',
+          password: hashPassword,
+        });
+        throw new HttpException('Đăng kí thành công', HttpStatus.CREATED)
+      }
+    } catch (error) {
+      throw error
     }
   }
   async login(loginUserDto: LoginUserDto): Promise<any> {
