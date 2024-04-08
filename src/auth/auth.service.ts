@@ -14,22 +14,30 @@ export class AuthService {
     @InjectRepository(User) private userRepository: Repository<User>,
     private jwtService: JwtService,
     private configService: ConfigService,
-  ) {}
-  async register(registerUserDto: RegisterUserDto): Promise<User> {
-    const hashPassword = await this.hashPassword(registerUserDto.password);
-    await this.userRepository.save({  
-      ...registerUserDto,
-      status:1,
-      refreshToken: 'refreshToken_string',
-      password: hashPassword,
-    });
-    throw new HttpException('Đăng kí thành công',HttpStatus.CREATED)
-  }
+  ) { }
   private async hashPassword(password: string): Promise<string> {
     const saltRound = 10;
     const salt = await bcrypt.genSalt(saltRound);
     const hash = await bcrypt.hash(password, salt);
     return hash;
+  }
+  async register(registerUserDto: RegisterUserDto): Promise<User> {
+    const user = this.userRepository.findOne({
+      where: { username: registerUserDto.username }
+    })
+    if (user) {
+      throw new HttpException("User đã tồn tại", HttpStatus.CONFLICT)
+    }
+    else {
+      const hashPassword = await this.hashPassword(registerUserDto.password);
+      await this.userRepository.save({
+        ...registerUserDto,
+        status: 1,
+        refreshToken: 'refreshToken_string',
+        password: hashPassword,
+      });
+      throw new HttpException('Đăng kí thành công', HttpStatus.CREATED)
+    }
   }
   async login(loginUserDto: LoginUserDto): Promise<any> {
     const user = await this.userRepository.findOne({
@@ -86,12 +94,12 @@ export class AuthService {
       if (verify) {
         await this.userRepository.update(
           { id: verify.id },
-          {refreshToken:'refreshToken_string'}
+          { refreshToken: 'refreshToken_string' }
         )
         throw new HttpException('Đăng xuất thành công', HttpStatus.OK);
       } else {
         throw new HttpException('Token không hợp lệ', HttpStatus.BAD_REQUEST);
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 }
