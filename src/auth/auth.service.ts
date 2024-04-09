@@ -48,7 +48,9 @@ export class AuthService {
       throw new HttpException('Sai mật khẩu', HttpStatus.UNAUTHORIZED);
     }
     const payload = { id: user.id, isAdmin: user.isAdmin };
-    return this.generateJWTToken(payload);
+    const JWTToken = await this.generateJWTToken(payload)
+    console.log(JWTToken)
+    return {JWTToken,user};
   }
   private async generateJWTToken(payload: { id: number; isAdmin: number }) {
     const accessToken = await this.jwtService.signAsync(payload);
