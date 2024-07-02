@@ -1,3 +1,4 @@
+import { Order } from 'src/order/entities/order.entity';
 import { Post } from 'src/post/entities/post.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
@@ -32,6 +33,9 @@ export class Service {
 
   @OneToMany(() => User, (user) => user.service)
   users: User[];
+
+  @OneToMany(() => Order, (order) => order.service)
+  orders: Order[];
 
   @OneToMany(() => Post, (post) => post.service)
   posts: Post[];

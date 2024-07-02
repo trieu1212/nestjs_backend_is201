@@ -10,6 +10,7 @@ import { PostModule } from './post/post.module';
 import { ServiceModule } from './service/service.module';
 import { OrderModule } from './order/order.module';
 import { ImageModule } from './image/image.module';
+import { NotifyModule } from './notify/notify.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(dataSourceOptions),
@@ -20,6 +21,7 @@ import { ImageModule } from './image/image.module';
     ServiceModule,
     OrderModule,
     ImageModule,
+    NotifyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

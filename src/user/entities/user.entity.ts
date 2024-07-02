@@ -1,3 +1,6 @@
+
+import { Notify } from 'src/notify/entities/notify.entity';
+import { Order } from 'src/order/entities/order.entity';
 import { Post } from 'src/post/entities/post.entity';
 import { Service } from 'src/service/entities/service.entity';
 import {
@@ -14,6 +17,9 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  name: string;
+  
   @Column({unique:true})
   username: string;
 
@@ -46,6 +52,12 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
+
+  @OneToMany(() => Notify, (notify) => notify.user)
+  notifications: Notify[];
 
   @CreateDateColumn()
   createdAt: Date;

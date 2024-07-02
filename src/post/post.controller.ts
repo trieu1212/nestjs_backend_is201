@@ -38,4 +38,9 @@ export class PostController {
     approvePost(@Param('id') id:string):Promise<PostEntity>{
         return this.postService.approvePost(Number(id));
     }
+
+    @Put('/hide/:id')
+    hidePost(@Param('id') id:string):Promise<PostEntity>{
+        return this.postService.hidePost(Number(id));
+    }
 }

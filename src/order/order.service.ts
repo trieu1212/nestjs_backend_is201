@@ -40,7 +40,7 @@ export class OrderService {
       });
       return await this.orderRepository.findOneBy({ id: order.id });
     } catch (error) {
-      throw new HttpException('Không thể tạo đơn hàng', HttpStatus.BAD_REQUEST);
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }
   }
   async findAll(id: number, query: FilterOrderDto): Promise<any> {

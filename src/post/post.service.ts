@@ -171,4 +171,14 @@ export class PostService {
     post.status = true;
     return this.postRepository.save(post);
   }
+  
+  async hidePost(id:number):Promise<PostEntity>{
+    const post = await this.postRepository.findOne({
+      where:{
+        id:id
+      }
+    })
+    post.status = false;
+    return this.postRepository.save(post);
+  }
 }

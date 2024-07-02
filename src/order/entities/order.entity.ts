@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -26,12 +27,12 @@ export class Order {
   @Column()
   totalPrice: number;
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, (user) => user.orders)
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' }) // JoinColumn without 'unique'
   user: User;
 
-  @OneToOne(() => Service)
-  @JoinColumn()
+  @ManyToOne(() => Service, (service) => service.orders)
+  @JoinColumn({ name: 'serviceId', referencedColumnName: 'id' }) // JoinColumn without 'unique'
   service: Service;
 
   @CreateDateColumn()

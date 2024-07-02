@@ -6,7 +6,7 @@ export const dataSourceOptions: DataSourceOptions = {
   port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306,
   username: process.env.DB_USERNAME || 'root',
   password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_DATABASE || 'is201',
+  database: process.env.DB_DATABASE || 'is201-notify',
   entities: ['dist/**/*.entity.js'],
   migrations: ['dist/db/migrations/*.js'],
   synchronize: false,

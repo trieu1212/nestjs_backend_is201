@@ -30,6 +30,7 @@ export class UserService {
         'username',
         'email',
         'avatar',
+        'phone',
         'isAdmin',
         'status',
         'createdAt',

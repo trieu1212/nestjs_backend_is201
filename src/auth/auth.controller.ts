@@ -32,4 +32,11 @@ export class AuthController {
             return this.authService.logout(accessToken)
         }
     }
+
+    @Post('forgot-password')
+    forgotPassword(@Body() body:{email:string}):Promise<any>{
+        const {email} = body;
+        console.log(email)
+        return this.authService.forgotPassword(email)
+    }
 }

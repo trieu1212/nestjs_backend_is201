@@ -100,4 +100,16 @@ export class AuthService {
       }
     } catch (error) { }
   }
+  async forgotPassword(email: string): Promise<any> {
+    const user = await this.userRepository.findOneBy({ email});
+    if (!user) {
+      throw new HttpException('Không tìm thấy User', HttpStatus.UNAUTHORIZED);
+    }
+    else{
+      const newPass = "123456",
+      hashPassword = await this.hashPassword(newPass);
+      await this.userRepository.update({email:email},{password:hashPassword})
+      throw new HttpException('Mật khẩu mới của bạn là 123456', HttpStatus.OK);
+    }
+  }
 }
