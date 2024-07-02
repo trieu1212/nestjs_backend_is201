@@ -29,7 +29,6 @@ export class AuthController {
     logout(@Headers('authorization') authHeader:string ):Promise<any>{
         if(authHeader){
             const accessToken = authHeader.split(' ')[1];
-            console.log(accessToken);
             return this.authService.logout(accessToken)
         }
     }

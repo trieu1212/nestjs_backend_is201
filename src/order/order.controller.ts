@@ -15,7 +15,6 @@ export class OrderController {
   @UseGuards(AuthGuard)
   @Post('/create')
   create(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
-    console.log(createOrderDto);
     return this.orderService.create(createOrderDto);
   }
 

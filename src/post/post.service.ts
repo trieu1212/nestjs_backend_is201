@@ -27,7 +27,7 @@ export class PostService {
     const newPost = new PostEntity();
     newPost.name = createPostDto.name;
     newPost.description = createPostDto.description;
-    newPost.status = true;
+    newPost.status = false;
     newPost.roomType = createPostDto.roomType;
     newPost.price = createPostDto.price;
     newPost.address = createPostDto.address;
@@ -130,5 +130,45 @@ export class PostService {
         }
       }
     })
+  }
+  async findAllByUser(id:number):Promise<PostEntity[]>{
+    return this.postRepository.find({
+      where:{
+        user:{
+          id:id
+        }
+      },
+      relations:{
+        user:true,
+        service:true,
+        images:true
+      },
+      select:{
+        user:{
+          id:true,
+          username:true,
+          email:true,
+          phone:true,
+          avatar:true
+        },
+        service:{
+          id:true,
+          name:true
+        },
+        images:{
+          id:true,
+          imageUrl:true
+        }
+      }
+    })
+  }
+  async approvePost(id:number):Promise<PostEntity>{
+    const post = await this.postRepository.findOne({
+      where:{
+        id:id
+      }
+    })
+    post.status = true;
+    return this.postRepository.save(post);
   }
 }

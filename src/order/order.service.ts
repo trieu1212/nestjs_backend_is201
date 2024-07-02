@@ -60,7 +60,8 @@ export class OrderService {
         },
       },
       relations:{
-        user:true
+        user:true,
+        service:true
       },
       take: itemPerPage,
       skip: skip,

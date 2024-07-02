@@ -49,7 +49,6 @@ export class AuthService {
     }
     const payload = { id: user.id, isAdmin: user.isAdmin };
     const JWTToken = await this.generateJWTToken(payload)
-    console.log(JWTToken)
     return {JWTToken,user};
   }
   private async generateJWTToken(payload: { id: number; isAdmin: number }) {

@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 
 import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 import { Post as PostEntity } from './entities/post.entity';
 import { PostService } from './post.service';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -16,8 +17,6 @@ export class PostController {
     @Post('/create')
     create(@Req() req:any, @Body() createPostDto:CreatePostDto):Promise<PostEntity>{
         return this.postService.create(req.user.id,createPostDto);
-        console.log(req.user.id);
-        console.log(createPostDto);
     }
 
     @Get()
@@ -28,5 +27,15 @@ export class PostController {
     @Get('/:id')
     findOne(@Param('id') id:string):Promise<PostEntity>{
         return this.postService.findOne(Number(id))
+    }
+
+    @Get('/user/:id')
+    findAllByUser(@Param('id') id:string):Promise<PostEntity[]>{
+        return this.postService.findAllByUser(Number(id));
+    }
+
+    @Put('/approve/:id')
+    approvePost(@Param('id') id:string):Promise<PostEntity>{
+        return this.postService.approvePost(Number(id));
     }
 }
