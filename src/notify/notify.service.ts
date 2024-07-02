@@ -13,9 +13,10 @@ export class NotifyService {
     ){}
 
     async create(CreateNotifyDto:CreateNotifyDto): Promise<Notify>{
-        const user = await this.userRepository.findOneBy({
-            id: CreateNotifyDto.user
+        const user = await this.userRepository.findOne({
+            where: { id: CreateNotifyDto.userId }
         });
+        
         const notify = new Notify();
         notify.title = CreateNotifyDto.title;
         notify.message = CreateNotifyDto.message;
@@ -26,23 +27,27 @@ export class NotifyService {
 
     async findAllByUser(id:number): Promise<any>{
         const user = await this.userRepository.findOne({
-            where: { id: id }
+            where: { id: id },
+            relations: ['notifications'],
         });
-        return await this.notifyRepository.find({
-            where: { id: user.id },
+        const result = await this.notifyRepository.find({
+            where: { user: { id: user.id } },
             order: { createdAt: 'DESC' },
+            relations: ['user'],
             select: {
-                user:{
-                    id:true,
-                    username:true,
-                    email:true,
-                    avatar:true
-                },
-                title:true,
-                message:true,
-                type:true,
-                createdAt:true
+                id: true,
+                title: true,
+                message: true,
+                type: true,
+                createdAt: true,
+                user: {
+                    id: true,
+                    username: true,
+                    email: true,
+                    avatar: true
+                }
             }
         });
+        return result;
     }
 }

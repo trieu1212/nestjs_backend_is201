@@ -56,6 +56,10 @@ export class UserController {
     return this.userService.update(Number(id), updateUserDto);
   }
 
+  @Put('update-password/:id')
+  updatePassword(@Param('id') id: string, @Body() body: { password: string }) {
+    return this.userService.updatePassword(Number(id), body.password);
+  }
   @UseGuards(AuthGuard)
   @Delete('/delete/:id')
   delete(@Param('id') id: string) {

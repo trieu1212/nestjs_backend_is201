@@ -11,7 +11,7 @@ export class UserService {
   constructor(
     // eslint-disable-next-line prettier/prettier
     @InjectRepository(User) private userRepository: Repository<User>,
-  ) {}
+  ) { }
   async findAll(query: FilterUserDto): Promise<any> {
     const itemPerPage = Number(query.itemPerPage) || 10;
     const page = Number(query.page) || 1;
@@ -65,18 +65,18 @@ export class UserService {
     id: number,
     updateUserDto: UpdateUserDto,
   ): Promise<UpdateResult> {
-    if (updateUserDto.password) {
-      const hashPass = await bcrypt.hash(updateUserDto.password, 10);
-      updateUserDto.password = hashPass;
-      return await this.userRepository.update(id, updateUserDto);
-    } else {
-      return await this.userRepository.update(id, updateUserDto);
-    }
+    return await this.userRepository.update(id, updateUserDto);
+
   }
   async delete(id: number): Promise<DeleteResult> {
     return await this.userRepository.delete(id);
   }
-  async uploadAvatar(id:number, avatar:string):Promise<UpdateResult>{
-    return await this.userRepository.update(id,{avatar:avatar})
+  async uploadAvatar(id: number, avatar: string): Promise<UpdateResult> {
+    return await this.userRepository.update(id, { avatar: avatar })
+  }
+
+  async updatePassword(id: number, password: string): Promise<UpdateResult> {
+    const hashPass = await bcrypt.hash(password, 10);
+    return await this.userRepository.update(id, { password: hashPass })
   }
 }

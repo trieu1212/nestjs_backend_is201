@@ -63,7 +63,10 @@ export class PostService {
         },
       ],
       order: { 
-        createdAt: 'DESC' 
+        service: {
+          id: 'ASC'
+        },
+        createdAt: 'DESC' ,
       },
       take: itemPerpage,
       skip: skip,

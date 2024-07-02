@@ -5,8 +5,6 @@ export class UpdateUserDto {
   @ApiProperty()
   username: string;
 
-  @ApiProperty()
-  password: string;
   @IsNotEmpty()
   @ApiProperty()
   phone: string;
