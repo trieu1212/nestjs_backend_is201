@@ -18,4 +18,10 @@ export class UpdatePostDto {
   
     @ApiProperty()
     arcreage: number;
+
+    @ApiProperty()
+    imageUrls: string[];
+
+    @ApiProperty()
+    serviceId: number;
 }

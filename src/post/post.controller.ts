@@ -43,4 +43,9 @@ export class PostController {
     hidePost(@Param('id') id:string):Promise<PostEntity>{
         return this.postService.hidePost(Number(id));
     }
+
+    @Put('/update/:id')
+    update(@Param('id') id:string,@Body() updatePostDto:UpdatePostDto):Promise<PostEntity>{
+        return this.postService.update(Number(id),updatePostDto);
+    }
 }

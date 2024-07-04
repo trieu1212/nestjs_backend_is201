@@ -7,6 +7,7 @@ import { Image } from 'src/image/entities/image.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Service } from 'src/service/entities/service.entity';
 import { FilterPostDto } from './dto/filter-post.dto';
+import { UpdatePostDto } from 'src/post/dto/update-post.dto';
 @Injectable()
 export class PostService {
   constructor(
@@ -183,5 +184,47 @@ export class PostService {
     })
     post.status = false;
     return this.postRepository.save(post);
+  }
+
+  async update(id:number,updatePostDto:UpdatePostDto):Promise<PostEntity>{
+    const post = await this.postRepository.findOne({
+      where: { id: id },
+      relations: ['images', 'user', 'service'],
+    });
+
+    if (!post) {
+      throw new Error('Post not found');
+    }
+
+    const service = await this.serviceRepository.findOneBy({
+      id: updatePostDto.serviceId,
+    });
+
+    if (!service) {
+      throw new Error('Service not found');
+    }
+
+    post.name = updatePostDto.name;
+    post.description = updatePostDto.description;
+    post.roomType = updatePostDto.roomType;
+    post.price = updatePostDto.price;
+    post.address = updatePostDto.address;
+    post.arcreage = updatePostDto.arcreage;
+    post.service = service;
+
+    await this.postRepository.save(post);
+
+    await this.imageRepository.delete({ post: { id: post.id } });
+
+    const saveImagePromises = updatePostDto.imageUrls.map(async (imageUrl) => {
+      const image = new Image();
+      image.imageUrl = imageUrl;
+      image.post = post;
+      return await this.imageRepository.save(image);
+    });
+
+    await Promise.all(saveImagePromises);
+
+    return post;
   }
 }
